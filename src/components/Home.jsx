@@ -49,12 +49,52 @@ const Home = () => {
     }
   };
 
+  const sharePost = (post) => {
+    const shareData = {
+      title: post.Titulo,
+      text: post.Descricao,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        navigator.share(shareData)
+          .then(() => console.log('Post shared successfully!'))
+          .catch(error => console.error('Error sharing post:', error));
+      } else {
+        alert('Share feature not supported in your browser.');
+      }
+    } catch (error) {
+      console.error('Error sharing post:', error);
+    }
+  };
+
+  const reportPost = async (postId) => {
+    try {
+      const response = await fetch(`https://projeto-bloco-4f62c-default-rtdb.firebaseio.com/reports/${postId}.json`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ reported: true }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to report post");
+      }
+
+      alert("Post reported successfully!");
+    } catch (error) {
+      console.error("Error reporting post:", error);
+    }
+  };
+
   return (
     <>
       <Nav />
       <main className="home">
         <h2 className="homeTitle">Tópicos Criados:</h2>
-        <PostsList posts={posts} deletePost={deletePost} />
+        <PostsList posts={posts} deletePost={deletePost} sharePost={sharePost} reportPost={reportPost} />
         <Link to="/create-thread" className="createThreadBtn">
           Crie seu Tópico
         </Link>

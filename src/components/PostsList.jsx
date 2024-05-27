@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const PostsList = ({ posts, deletePost }) => {
+const PostsList = ({ posts, deletePost, sharePost, reportPost }) => {
   return (
     <div className="topic__container">
       {posts.map((post, index) => (
@@ -9,7 +9,11 @@ const PostsList = ({ posts, deletePost }) => {
             <p className="topic__title">Título: {post.Titulo}</p>
             <p className="topic__description">Descrição: {post.Descricao}</p>
           </div>
-          <button className="deleteBtn" onClick={() => deletePost(post.id)}>Excluir</button>
+          <div className="buttonContainer">
+            <button className="deleteBtn" onClick={() => deletePost(post.id)}>Excluir</button>
+            <button className="shareBtn" onClick={() => sharePost(post)}>Compartilhar</button>
+            <button className="reportBtn" onClick={() => reportPost(post.id)}>Denunciar</button>
+          </div>
         </div>
       ))}
     </div>
@@ -19,6 +23,8 @@ const PostsList = ({ posts, deletePost }) => {
 PostsList.propTypes = {
   posts: PropTypes.array.isRequired,
   deletePost: PropTypes.func.isRequired,
+  sharePost: PropTypes.func.isRequired,
+  reportPost: PropTypes.func.isRequired,
 };
 
 export default PostsList;
